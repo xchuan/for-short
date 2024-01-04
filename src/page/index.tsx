@@ -14,6 +14,8 @@ export default function Index(){
   const [classBtn, setClassBtn] = useState(true);
   const [childBtn, setChildBtn] = useState('Child Btn');
   const navigate = useNavigate();
+
+  console.log(import.meta.env.VITE_LOGIN_API)
   
   const fireSubmit = ()=>{
     setCount(count+1);

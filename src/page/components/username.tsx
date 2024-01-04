@@ -11,7 +11,7 @@ export default function UserName(props:inputItemProps){
   const [input, setInput] = useState<any>('');
   let input_len = 0;
 
-  let fireNewVal = (val:string)=>{
+  const fireNewVal = (val:string)=>{
     props.onChange(val);
     setInput(val);
   }

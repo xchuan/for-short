@@ -3,8 +3,10 @@
  */
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_LOGIN_API;
+//console.log(import.meta.env.VITE_LOGIN_API)
 axios.defaults.timeout = 100000;
-axios.defaults.baseURL = "http://localhost:3000/";
+axios.defaults.baseURL = API_URL;
 
 /**
  * http request 拦截器
