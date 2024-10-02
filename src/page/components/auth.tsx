@@ -8,7 +8,7 @@ type RouteProps = {
 const loginRoute = '/login'
 const indexRoute = '/'
 // 路由表白名单
-const allowList = ['/','/login', '/reg']
+const allowList = ['/','/login', '/reg', '/upload']
 
 const AuthRoute: React.FC<RouteProps> = (props) => {
   const location = useLocation();

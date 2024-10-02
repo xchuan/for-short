@@ -3,6 +3,7 @@ import Index from '../page'
 import Home from '../page/home'
 import About from '../page/about'
 import Links from '../page/links'
+import Upload from '../page/upload'
 //import { lazily } from 'react-lazily';
 const Lazys = lazy(() => delayForDemo(import('../page/lazypage')));
 
@@ -42,6 +43,10 @@ export default [
   {
     path:'/link',
     element: <Links />
+  },
+  {
+    path:'/upload',
+    element: <Upload />
   },
   {
     path:'/welcome/:nickname',

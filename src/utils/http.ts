@@ -18,18 +18,24 @@ interface cfgPost {
 
 axios.interceptors.request.use(
   (config:any) => {
-    config.data = JSON.stringify(config.data);
-    
-    config.headers = {
-      "Content-Type": "application/json",
-      "accept":"*/*",
-      //"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbiIsImlhdCI6MTcwMTE2MjcwMCwiZXhwIjoxNzAxMTYyODIwfQ.FZTYb8iK0qkRIpgeG-trJ-MWv59APvhBO9fMUf2lgPc"
-    };
-    const token  = sessionStorage.getItem('_token');
-    console.log(token,'tttttttt');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    console.log(config,config.data);
+    if(!String(config.url).includes("cone.xhashao.top")){
+      config.data = JSON.stringify(config.data);
+      config.headers = {
+        "Content-Type": "application/json",
+        "accept":"*/*",
+        //"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbiIsImlhdCI6MTcwMTE2MjcwMCwiZXhwIjoxNzAxMTYyODIwfQ.FZTYb8iK0qkRIpgeG-trJ-MWv59APvhBO9fMUf2lgPc"
+      };
+      const token  = sessionStorage.getItem('_token');
+      console.log(token,'tttttttt');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }  
     }
+    
+
+    console.log(config,"config end");
+    
     return config;
   },
   (error:any) => {
