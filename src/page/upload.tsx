@@ -23,7 +23,7 @@ export default function Upload() {
     let objSize = file.size;
     console.log(objSize, "objSize");
 
-    fetch(url, {
+    /*fetch(url, {
       method: 'PUT',
       body: file
     }).then(() => {
@@ -31,7 +31,7 @@ export default function Upload() {
       console.log('上传成功', file.name);
     }).catch((e) => {
       console.error('上传失败', e);
-    });
+    });*/
 
     /*axios({
       method: 'PUT',
@@ -57,7 +57,7 @@ export default function Upload() {
     }).catch(err => {
       console.log(err)
     })*/
-    /*axios({ 
+    axios({ 
       method: 'put', 
       url: url, 
       data: file,
@@ -82,7 +82,7 @@ export default function Upload() {
     .catch((error) => {
       // 失败之后做些什么
       console.error('上传失败', error);
-    });*/
+    });
     /*const reader = new FileReader();
     reader.readAsArrayBuffer(file);  
     reader.onload = () => { 

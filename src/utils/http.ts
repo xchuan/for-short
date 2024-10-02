@@ -19,7 +19,7 @@ interface cfgPost {
 axios.interceptors.request.use(
   (config:any) => {
     console.log(config,config.data);
-    if(!String(config.url).includes("cone.xhashao.top")){
+    if(!String(config.url).includes("cone.xhashao.top") && !String(config.url).includes("9002")){
       config.data = JSON.stringify(config.data);
       config.headers = {
         "Content-Type": "application/json",
