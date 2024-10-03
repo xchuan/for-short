@@ -5,7 +5,7 @@ import axios from "axios";
 
 const API_URL = import.meta.env.VITE_LOGIN_API;
 //console.log(import.meta.env.VITE_LOGIN_API)
-axios.defaults.timeout = 100000;
+axios.defaults.timeout = 60 * 60 * 1000;
 axios.defaults.baseURL = API_URL;
 
 /**
@@ -19,7 +19,7 @@ interface cfgPost {
 axios.interceptors.request.use(
   (config:any) => {
     console.log(config,config.data);
-    if(!String(config.url).includes("cone.xhashao.top") && !String(config.url).includes("9002")){
+    if(!String(config.url).includes("cone.xhashao.top") && !String(config.url).includes("9002") && !String(config.url).includes("/files")){
       config.data = JSON.stringify(config.data);
       config.headers = {
         "Content-Type": "application/json",
@@ -73,9 +73,9 @@ export function get(url:string, params = {} ,auth?:string) {
  * @returns {Promise}
  */
 
-export function post(url:string, data:any) {
+export function post(url:string, data:any,config?:any) {
   return new Promise((resolve, reject) => {
-    axios.post(url, data).then(
+    axios.post(url, data, config).then(
       (response) => {
         //关闭进度条
         resolve(response.data);

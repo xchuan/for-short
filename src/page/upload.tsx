@@ -1,6 +1,7 @@
 //import { useSearchParams ,useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import axios, { AxiosProgressEvent } from 'axios';
+
 //useSearchParams
 interface locationLink {
   name: string;
