@@ -46,7 +46,7 @@ function App() {
             <li><NavLink to={`link?name=${alink[0].name}&link=${alink[0].link}`}>链接A</NavLink></li>
             <li><NavLink to="link" state={{name:'google',link:'http://www.google.com.hk'}}>链接B</NavLink></li>
             <li><Link to="/other">其他链接</Link></li>
-            <li><Link to="/upload">上传工具</Link></li>
+            <li><Link to="/upload">上传</Link> <Link to="/up">上传2</Link> </li>
             <li>切换<a onClick={()=>setThemeDark()}>深色</a>/<a onClick={()=>setThemeLight()}>浅色</a></li>
           </ul>
         </div>

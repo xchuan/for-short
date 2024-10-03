@@ -101,10 +101,11 @@ export default function Upload() {
   function handleSubmit(event) {
     event.preventDefault()
     if (file) {
-      const url = `http://localhost:3000/v1/presignedUrl?name=${file.name}`;
+      const url = `/v1/presignedUrl?name=${file.name}`;
       axios.get(url).then((response) => {
         console.log(response.data);
-        const newUrl: string = response.data;
+        let newUrl: string = response.data;
+        //newUrl = newUrl.replace("http://127.0.0.1:9002","");
         uploadPut(newUrl, file);
       });
     }
