@@ -117,6 +117,7 @@ export default function Upload() {
       <form onSubmit={handleSubmit}>
         <input type="file" id="selector" multiple onChange={handleChange}></input>
         <button>Upload</button>
+        
         <div id="status">No uploads</div>
       </form>
     </>

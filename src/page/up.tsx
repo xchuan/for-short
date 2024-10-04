@@ -1,7 +1,7 @@
 //import { useSearchParams ,useLocation } from 'react-router-dom';
 import { useState } from "react";
 import axios, { AxiosProgressEvent } from "axios";
-import {post } from "../utils/http"
+import { post } from "../utils/http"
 //useSearchParams
 interface locationLink {
   name: string;
@@ -12,6 +12,13 @@ export default function Uploadfile() {
   //const [search, setSearch] = useSearchParams();
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
   const [uploadFile, setFile] = useState<File>()
+  const [path, setPath] = useState<string>()
+
+  function handleChangePath(event) {
+    console.log(event.target.value,"setPath");
+    
+    setPath(event.target.value)
+  }
 
   function handleChange(event) {
     //setSelectedFiles(event.target.files)
@@ -77,31 +84,57 @@ export default function Uploadfile() {
         console.error('上传失败', error);
       });*/
     let formData = new FormData();
-console.log(uploadFile,"uploadFile222");
-    if(uploadFile)
+    console.log(uploadFile, "uploadFile222");
+    if (uploadFile)
       formData.append("file", uploadFile);
 
     post("http://localhost:3000/v1/files", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-      },onUploadProgress: function (progressEvent) {
+      }, onUploadProgress: function (progressEvent) {
         let complete =
           ((progressEvent.loaded / progressEvent.total) * 100) | 0
         console.log(complete + "%")
       },
     });
   }
+
   const upload = () => {
     //const upload = async (file: File, onUploadProgress: any) => {
+    let formData = new FormData();
+    console.log(uploadFile, "uploadFile222");
+    if (uploadFile)
+      formData.append("file", uploadFile);
 
+    post("http://localhost:3000/v1/upfile", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }, onUploadProgress: function (progressEvent) {
+        let complete =
+          ((progressEvent.loaded / progressEvent.total) * 100) | 0
+        console.log(complete + "%")
+      },
+    });
   }
-  //
+
+  const uploadTrans = () => {
+    console.log(path);
+    
+    post("http://localhost:3000/v1/trans", {
+      path: path,
+      lastName: 'Flintstone'
+    });
+  }
+
+  // onSubmit={sendFile}
   return (
     <>
-      <form onSubmit={sendFile}>
+      <div>
         <input type="file" name="image" id="image" onChange={handleChange} multiple />
-        <button>Send</button>
-      </form>
+        <button onClick={upload}>Send</button>
+        <input type="input" id="transpath" onChange={handleChangePath}></input>
+        <button onClick={uploadTrans}>Trans</button>
+      </div>
     </>
   );
 }
