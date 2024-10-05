@@ -13,6 +13,7 @@ export default function Uploadfile() {
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
   const [uploadFile, setFile] = useState<File>()
   const [path, setPath] = useState<string>()
+  const [displayPath, setDisplayPath] = useState<string>()
 
   function handleChangePath(event) {
     console.log(event.target.value,"setPath");
@@ -114,6 +115,10 @@ export default function Uploadfile() {
           ((progressEvent.loaded / progressEvent.total) * 100) | 0
         console.log(complete + "%")
       },
+    }).then((response:any)=>{
+      console.log(response);
+      
+      setDisplayPath(response.files ?? "blank");
     });
   }
 
@@ -134,6 +139,7 @@ export default function Uploadfile() {
         <button onClick={upload}>Send</button>
         <input type="input" id="transpath" onChange={handleChangePath}></input>
         <button onClick={uploadTrans}>Trans</button>
+        <p>{displayPath}</p>
       </div>
     </>
   );
