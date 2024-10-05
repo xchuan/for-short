@@ -13,7 +13,8 @@ export default function Uploadfile() {
   const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
   const [uploadFile, setFile] = useState<File>()
   const [path, setPath] = useState<string>()
-  const [displayPath, setDisplayPath] = useState<string>()
+  const [displayPath, setDisplayPath] = useState<string>("")
+  const [displayType, setDisplayType] = useState<string>("")
 
   function handleChangePath(event) {
     console.log(event.target.value,"setPath");
@@ -119,6 +120,8 @@ export default function Uploadfile() {
       console.log(response);
       
       setDisplayPath(response.files ?? "blank");
+      setDisplayType(response.mimetype ?? "blank");
+      //mimetype
     });
   }
 
@@ -126,7 +129,7 @@ export default function Uploadfile() {
     console.log(path);
     
     post("http://localhost:3000/v1/trans", {
-      path: path,
+      path: displayPath,type: displayType,
       lastName: 'Flintstone'
     });
   }
@@ -137,9 +140,10 @@ export default function Uploadfile() {
       <div>
         <input type="file" name="image" id="image" onChange={handleChange} multiple />
         <button onClick={upload}>Send</button>
-        <input type="input" id="transpath" onChange={handleChangePath}></input>
+        <input type="input" id="transpath" value={displayPath} onChange={handleChangePath}></input>
+        <input type="input" id="transtype" value={displayType} onChange={e => { setDisplayType(e.target.value); }}></input>
         <button onClick={uploadTrans}>Trans</button>
-        <p>{displayPath}</p>
+        <p>{displayPath} | {displayType}</p>
       </div>
     </>
   );
