@@ -1,6 +1,6 @@
 import React from 'react'
 import {Navigate, useLocation} from "react-router-dom";
-
+import { decodeJwt } from '../../utils/auth'
 type RouteProps = {
   children?: React.ReactNode
 }
@@ -15,6 +15,11 @@ const AuthRoute: React.FC<RouteProps> = (props) => {
   // children 为子组件
   const {children} = props
   const token = sessionStorage.getItem('_token');
+  const userInfo = decodeJwt(token);
+
+  console.log(userInfo,"userInfo");
+  
+
   if (token && token !== 'undefined') {
     if (location.pathname === loginRoute) {
       return <Navigate to={indexRoute}></Navigate>

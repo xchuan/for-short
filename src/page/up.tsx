@@ -2,6 +2,7 @@
 import { useState } from "react";
 import axios, { AxiosProgressEvent } from "axios";
 import { post } from "../utils/http"
+const API_URL = import.meta.env.VITE_LOGIN_API;
 //useSearchParams
 interface locationLink {
   name: string;
@@ -54,7 +55,7 @@ export default function Uploadfile() {
 
     /*axios({ 
       method: 'post', 
-      url: "http://localhost:3000/v1/files", 
+      url: "/v1/files", 
       data: formData,
       timeout: 36000000,
       onUploadProgress:(e:AxiosProgressEvent)=>{
@@ -79,7 +80,7 @@ export default function Uploadfile() {
         console.log(complete + "%")
       },
     }
-    axios.post('http://localhost:3000/v1/files', formData, config)
+    axios.post('/v1/files', formData, config)
       .then((response) => {
         console.log('上传成功', response);
       })
@@ -92,7 +93,7 @@ export default function Uploadfile() {
     if (uploadFile)
       formData.append("file", uploadFile);
 
-    post("http://localhost:3000/v1/files", formData, {
+    post("/v1/files", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       }, onUploadProgress: function (progressEvent) {
@@ -110,7 +111,7 @@ export default function Uploadfile() {
     if (uploadFile)
       formData.append("file", uploadFile);
 
-    post("http://localhost:3000/v1/upfile", formData, {
+    post("/v1/upfile", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       }, onUploadProgress: function (progressEvent) {
@@ -132,7 +133,7 @@ export default function Uploadfile() {
   const uploadTrans = () => {
     console.log(path);
     
-    post("http://localhost:3000/v1/trans", {
+    post("/v1/trans", {
       path: displayPath,type: displayType,
       lastName: 'Flintstone'
     }).then((response:any)=>{

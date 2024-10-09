@@ -4,7 +4,7 @@ import UserName from './components/username'
 import IButton from './components/newbtn'
 import {userFormData} from '../model/index'
 import { useNavigate } from 'react-router-dom'
-
+import { decodeJwt } from '../utils/auth'
 
 export default function Index(){
   const [count, setCount] = useState(0);
@@ -45,12 +45,14 @@ export default function Index(){
   };
 
   const loginSubmit = ()=>{
-    console.log(formobj);
     setPreview(outputJson(formobj));
     postLogin(formobj).then((res:any)=>{
       console.log(res,'after login chk');
       if(res.code=='200' && res.token){
         sessionStorage.setItem('_token',res.token);
+        const userInfo = decodeJwt(res.token);
+
+        console.log(userInfo,"userInfo");
         setLogined(true);
       }else{
         setLogined(false);
