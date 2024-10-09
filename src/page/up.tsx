@@ -15,6 +15,8 @@ export default function Uploadfile() {
   const [path, setPath] = useState<string>()
   const [displayPath, setDisplayPath] = useState<string>("")
   const [displayType, setDisplayType] = useState<string>("")
+  const [displayPercent, setDisplayPercent] = useState<string>("0%")
+  const [preview, setPreview] = useState<string>("")
 
   function handleChangePath(event) {
     console.log(event.target.value,"setPath");
@@ -85,7 +87,7 @@ export default function Uploadfile() {
         // 失败之后做些什么
         console.error('上传失败', error);
       });*/
-    let formData = new FormData();
+    const formData = new FormData();
     console.log(uploadFile, "uploadFile222");
     if (uploadFile)
       formData.append("file", uploadFile);
@@ -94,7 +96,7 @@ export default function Uploadfile() {
       headers: {
         "Content-Type": "multipart/form-data",
       }, onUploadProgress: function (progressEvent) {
-        let complete =
+        const complete =
           ((progressEvent.loaded / progressEvent.total) * 100) | 0
         console.log(complete + "%")
       },
@@ -103,7 +105,7 @@ export default function Uploadfile() {
 
   const upload = () => {
     //const upload = async (file: File, onUploadProgress: any) => {
-    let formData = new FormData();
+    const formData = new FormData();
     console.log(uploadFile, "uploadFile222");
     if (uploadFile)
       formData.append("file", uploadFile);
@@ -112,9 +114,11 @@ export default function Uploadfile() {
       headers: {
         "Content-Type": "multipart/form-data",
       }, onUploadProgress: function (progressEvent) {
-        let complete =
+        const complete =
           ((progressEvent.loaded / progressEvent.total) * 100) | 0
-        console.log(complete + "%")
+        console.log(complete + "%");
+        complete%5==0 && setDisplayPercent(complete + "%");
+        //setDisplayPercent(complete + "%");
       },
     }).then((response:any)=>{
       console.log(response);
@@ -131,7 +135,15 @@ export default function Uploadfile() {
     post("http://localhost:3000/v1/trans", {
       path: displayPath,type: displayType,
       lastName: 'Flintstone'
+    }).then((response:any)=>{
+      //console.log(response);
+      setPreview(response.path ? `https://img.xfiled.one/nchome/${String(response.path)}` : "");
+      //mimetype
     });
+  }
+
+  const testPreview = () => {
+    setPreview("https://img.xfiled.one/nchome/IMG_20240105_095201.jpg");
   }
 
   // onSubmit={sendFile}
@@ -143,7 +155,9 @@ export default function Uploadfile() {
         <input type="input" id="transpath" value={displayPath} onChange={handleChangePath}></input>
         <input type="input" id="transtype" value={displayType} onChange={e => { setDisplayType(e.target.value); }}></input>
         <button onClick={uploadTrans}>Trans</button>
-        <p>{displayPath} | {displayType}</p>
+        {/* <button onClick={testPreview}>Preview</button> */}
+        <p>{displayPath} | {displayType} | {displayPercent}</p>
+        {preview && <a href={preview} target="_blank">Preview</a>}
       </div>
     </>
   );
