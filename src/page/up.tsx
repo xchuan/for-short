@@ -137,7 +137,7 @@ export default function Uploadfile() {
       lastName: 'Flintstone'
     }).then((response:any)=>{
       //console.log(response);
-      setPreview(response.path ? `https://img.xfiled.one/nchome/${String(response.path)}` : "");
+      setPreview(response.path ? `https://img.xfiled.one/blog/${String(response.path)}` : "");
       //mimetype
     });
   }
