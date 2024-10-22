@@ -21,7 +21,7 @@ export default function Upload() {
     // 使用FormData对象上传文件
     //const formData = new FormData();
     //formData.append('file', file);
-    let objSize = file.size;
+    const objSize = file.size;
     console.log(objSize, "objSize");
 
     /*fetch(url, {
@@ -105,7 +105,7 @@ export default function Upload() {
       const url = `/v1/presignedUrl?name=${file.name}`;
       axios.get(url).then((response) => {
         console.log(response.data);
-        let newUrl: string = response.data;
+        const newUrl: string = response.data;
         //newUrl = newUrl.replace("http://127.0.0.1:9002","");
         uploadPut(newUrl, file);
       });

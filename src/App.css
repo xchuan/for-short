@@ -5,11 +5,51 @@ body{
 
 .main{
   display: flex;
+  height: 100vh;
 
   .left{
-    width: 200px;
+    
+    position: relative;
+
+    .leftmenu{
+      margin-right: 5px;
+    }
+    .stick{
+      background-color: rgb(202, 202, 250);
+      width: 5px;
+      height: 100vh;
+      position: absolute;
+      right: 0px;
+      top: 0px;
+      cursor: col-resize;
+      display: none;
+    }
+  }
+  .gap{
+    width: 5px;
+    cursor: col-resize;
+    height: 100vh;
+    background-color: antiquewhite;
   }
   .view{
     flex:1;
+    flex-direction: column;
+    display: flex;
+
+    .footer{
+      margin-top: auto;
+      margin-bottom: 0px;
+    }
+  }
+  
+  .leftmenu a{
+    cursor: pointer;
+  }
+}
+
+.dark{
+  a:visited {
+    color: wheat;
+    text-decoration-color: rgb(250, 224, 140);
   }
 }

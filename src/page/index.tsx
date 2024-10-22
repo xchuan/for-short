@@ -3,8 +3,9 @@ import { getSysInfo,getDiskInfo,postLogin } from '../utils/gomock'
 import UserName from './components/username'
 import IButton from './components/newbtn'
 import {userFormData} from '../model/index'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { decodeJwt } from '../utils/auth'
+import { useAuth } from '../hooks/use-auth';
 
 export default function Index(){
   const [count, setCount] = useState(0);
@@ -14,7 +15,8 @@ export default function Index(){
   const [classBtn, setClassBtn] = useState(true);
   const [childBtn, setChildBtn] = useState('Child Btn');
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const { user, login, msg } = useAuth()
   console.log(import.meta.env.VITE_LOGIN_API)
   
   const fireSubmit = ()=>{
@@ -44,16 +46,27 @@ export default function Index(){
     setFormObj(formobj);
   };
 
+  const authSubmit = ()=>{
+    try {
+      login(formobj);
+    } catch (error) {
+      console.log(error,'222222')
+    }
+  }
+
   const loginSubmit = ()=>{
-    setPreview(outputJson(formobj));
+    //setPreview(outputJson(formobj));
     postLogin(formobj).then((res:any)=>{
       console.log(res,'after login chk');
       if(res.code=='200' && res.token){
         sessionStorage.setItem('_token',res.token);
         const userInfo = decodeJwt(res.token);
 
-        console.log(userInfo,"userInfo");
+        console.log(userInfo,location,"userInfo");
         setLogined(true);
+        if(location.search){
+          navigate(decodeURIComponent(location.search.replace('?back=','')));
+        }
       }else{
         setLogined(false);
       }
@@ -68,7 +81,6 @@ export default function Index(){
     setClassBtn(false);
   }
 
-
   const goGoogle = ()=>{
     navigate('link',{
       state:{name:'bing',link:'http://www.bing.com'}
@@ -79,14 +91,14 @@ export default function Index(){
   return <div>
     <h2>Login</h2>
     <UserName label='Username:' onChange={logUsername}></UserName>
-    <UserName label='Password:' type='password' onChange={logPassword}></UserName>
+    <UserName label='Password:' type='password' onChange={logPassword} onEnter={authSubmit}></UserName>
     <div>
       <input type="button" value="Submit" onClick={()=>fireSubmit()}/> <input type="button" value="Auth" onClick={()=>fireSubmitWithAuth()}/>
-      &nbsp;<input type="button" value="Login" onClick={()=>loginSubmit()}/> {classBtn && <IButton onClick={()=>umMountClsBtn()} defaultText={childBtn}/>}
+      &nbsp;<input type="button" value="Login" style={{display:'none'}} onClick={()=>loginSubmit()}/><input type="button" value="Login" onClick={()=>authSubmit()}/> {classBtn && <IButton onClick={()=>umMountClsBtn()} defaultText={childBtn}/>}
       <input type="button" value="Golink" onClick={()=>goGoogle()}/>
     </div>
     <div>{count}</div>
-    {islogined ? <div>Logined</div> : ''}
+    {(user && user?.logined) ? user.msg : msg}
     <div><code>{preview}</code></div>
     <img src="https://cbimg.xchuan.workers.dev/thumb/mini/article/2023/1228/306663c16ebe9cd.jpg"/>
   </div>;

@@ -5,6 +5,7 @@ import About from '../page/about'
 import Links from '../page/links'
 import Upload from '../page/upload'
 import Uploadfile from '../page/up'
+import Quote from '../page/quote'
 //import { lazily } from 'react-lazily';
 const Lazys = lazy(() => delayForDemo(import('../page/lazypage')));
 
@@ -52,6 +53,10 @@ export default [
   {
     path:'/up',
     element: <Uploadfile />
+  },
+  {
+    path:'/quote',
+    element: <Quote />
   },
   {
     path:'/welcome/:nickname',

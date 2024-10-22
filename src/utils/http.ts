@@ -19,7 +19,7 @@ interface cfgPost {
 axios.interceptors.request.use(
   (config:any) => {
     const token  = sessionStorage.getItem('_token');
-    console.log(config,config.data);
+    //console.log(config,config.data);
     if(!String(config.url).includes("cone.xhashao.top") 
       && !String(config.url).includes("9002") 
       && !String(config.url).includes("/files")

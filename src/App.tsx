@@ -1,62 +1,80 @@
-import { createContext , useState} from 'react'
+import { createContext, useEffect, useState } from "react";
 //import Index from './page'
-import { Link, NavLink, useRoutes} from 'react-router-dom'
-import AuthRoute from './page/components/auth'
-import {IThemeProps} from './model/index'
+import { Link, NavLink, useRoutes, useNavigate } from "react-router-dom";
+import AuthRoute from "./page/components/auth";
+import Menu from "./page/components/menu";
 //import reactLogo from './assets/react.svg'
-import routes from './routes'
-import './App.css'
-
-// 主题色
-const themes: IThemeProps = {
-  'light': {
-    color: '#000',
-    background: '#eee'
-  },
-  'dark': {
-    color: '#fff',
-    background: '#222'
-  }
-}
-
-export const ThemeContext = createContext('light');
+import routes from "./routes";
+import { logout, decodeJwt } from "./utils/auth";
+import { User } from "./utils/user";
+import { ThemeContext, themes } from "./utils/theme-context";
+import { useAuth } from "./hooks/use-auth";
+import useDraggable from 'use-draggable-hook';
+import { tzCompare } from "tz-compare";
+import "./App.css";
 
 function App() {
   //const [count, setCount] = useState(0)
-  const [theme, setTheme] = useState('light');
-  const element = useRoutes(routes);
-  const alink = [{name:'baidu',link:'https://www.baidu.com'}];
+  const [themeStatus, setThemeStatus] = useState("light");
+  const [leftStyle, setLeftStyle] = useState({width: 200});
 
-  const setThemeDark = ()=>{
-    setTheme('dark');
+  const element = useRoutes(routes);
+  const { target } = useDraggable<HTMLDivElement>({
+    prevent:true,
+    maxDistance:{
+      x:{ max: 50, min: -50 }
+    },
+    direction: "horizontal",
+    onMove:(target,pos,setPos) => {
+      //console.log(pos);
+      setLeftStyle({width:200+pos[0]});
+    }
+  })
+  const { user, setUser } = useAuth();
+  const token = sessionStorage.getItem("_token");
+
+  const setTheme = (theme:string)=>{
+    setThemeStatus(theme);
   }
-  const setThemeLight = ()=>{
-    setTheme('light');
+
+  useEffect(() => {
+    if(!token) {setUser && setUser(null);}
+    if (token && !user) {
+      const userInfo = decodeJwt(token);
+      const usrData: User = {
+        user_name: userInfo.user_name,
+        iat: userInfo.iat,
+        exp: userInfo.exp,
+        token: token,
+        logined: true,
+      };
+      setUser && setUser(usrData);
+    }
+  }, [token]);
+
+  const themeC = themes[themeStatus]; 
+  const mainStyle = {
+    color:themeC.color,
+    background:themeC.background
   }
+
   return (
     <>
-      <ThemeContext.Provider value={theme}>
-      <div className='main'>
-        <div className='left'>
-          <ul>
-            <li><Link to="/">首页{theme}</Link></li>
-            <li><Link to="/login">登录</Link> <Link to="/reg">注册</Link></li>
-            <li><Link to="/about">关于</Link> <Link to="/welcome/高级用户">VIP</Link></li>
-            <li><Link to="/links">友情链接</Link></li>
-            <li><NavLink to={`link?name=${alink[0].name}&link=${alink[0].link}`}>链接A</NavLink></li>
-            <li><NavLink to="link" state={{name:'google',link:'http://www.google.com.hk'}}>链接B</NavLink></li>
-            <li><Link to="/other">其他链接</Link></li>
-            <li><Link to="/up">上传</Link> </li>
-            <li>切换<a onClick={()=>setThemeDark()}>深色</a>/<a onClick={()=>setThemeLight()}>浅色</a></li>
-          </ul>
+      <ThemeContext.Provider value={themes[themeStatus]}>
+        <div className={["main",themeStatus].join(' ')}  style={mainStyle}>
+          <div className="left" style={leftStyle}>
+            <Menu authInfo={user} onThemeChange={setTheme}/>
+            <div className="stick"></div>
+          </div>
+          <div className="gap" ref={target}></div>
+          <div className="view">
+            <AuthRoute>{element}</AuthRoute>
+            <div className="footer">{tzCompare("Shanghai","zh-CN")} Copyright &copy; 2024</div>
+          </div>
         </div>
-        <div className='view'>
-          <AuthRoute>{element}</AuthRoute>
-        </div>
-      </div>
       </ThemeContext.Provider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

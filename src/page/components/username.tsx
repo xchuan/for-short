@@ -5,6 +5,8 @@ interface inputItemProps {
   type?:string;
   limit?:number;
   onChange: (params: any) => any;
+  onEnter?: () => any;
+  autoRedirect?: boolean;
 }
 
 export default function UserName(props:inputItemProps){
@@ -26,10 +28,20 @@ export default function UserName(props:inputItemProps){
     fireNewVal(newVal)
   }
 
+  const inputParams = {
+    onChange:handleCnhange,
+    //onKeyDown:(e) => (e.key === "Enter" ? props.onEnter() : null),
+    type: !props.type ? "text" : props.type
+  }
+
+  if(props.onEnter){
+    inputParams['onKeyDown'] = (e) => (e.key === "Enter" ? props.onEnter!() : null)
+  }
+
   return (
     <>
       <div>
-        {props.label}<input onChange={handleCnhange} type={!props.type ? "text" : props.type} value={input}/>
+        {props.label}<input {...inputParams} value={input}/>
         <span onClick={()=>{changeVal('11111')}}>{input.length}</span>
       </div>
     </>  
