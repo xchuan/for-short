@@ -63,6 +63,8 @@ export default function Quote() {
       city: selectedCity
     }).then((response:any)=>{
       console.log(response);
+    }).catch((error:any) => {
+      console.log(error,"Create error")
     });
   }
 
@@ -72,6 +74,8 @@ export default function Quote() {
     }).then((response:any)=>{
       console.log(response);
       setQuoteEn(response['translated']);
+    }).catch((error:any) => {
+      console.log(error,"Translate error")
     });
   }
 
@@ -79,6 +83,8 @@ export default function Quote() {
     get("/v1/jsonupload").then((response:any)=>{
       console.log(response);
       setQuoteEn(response['translated']);
+    }).catch((error:any) => {
+      console.log(error,"Upload error")
     });
   }
 
@@ -139,6 +145,7 @@ export default function Quote() {
           <option value="Paris">巴黎</option>
           <option value="Beijing">北京</option>
           <option value="Taipei">台北</option>
+          <option value="Berlin">柏林</option>
         </select>
         <input
           type="input"
