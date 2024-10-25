@@ -35,6 +35,7 @@ function App() {
 
   const setTheme = (theme:string)=>{
     setThemeStatus(theme);
+    return theme;
   }
 
   useEffect(() => {
@@ -58,13 +59,21 @@ function App() {
     background:themeC.background
   }
 
+  const toggleMenu = ()=>{
+    if(leftStyle.width==150){
+      setLeftStyle({width:50});
+    }else{
+      setLeftStyle({width:150});
+    }
+  }
+
   return (
     <>
       <ThemeContext.Provider value={themes[themeStatus]}>
-        <div className={["main",themeStatus].join(' ')}  style={mainStyle}>
+        <div className={["main",leftStyle.width==50?"toggled":"normal",themeStatus].join(' ')}  style={mainStyle}>
           <div className="left" style={leftStyle}>
             <Menu authInfo={user} onThemeChange={setTheme}/>
-            <div className="stick"></div>
+            <div className="stick" onClick={toggleMenu}>░</div>
           </div>
           <div className="gap" ref={target}></div>
           <div className="view">

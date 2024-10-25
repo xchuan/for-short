@@ -13,15 +13,20 @@ body{
 
     .leftmenu{
       margin-right: 5px;
+      em{
+        display: none;
+      }
     }
     .stick{
       background-color: rgb(202, 202, 250);
-      width: 5px;
-      height: 100vh;
+      width: auto;
+      height: 50px;
       position: absolute;
       right: 0px;
       top: 0px;
-      cursor: col-resize;
+      cursor: pointer;
+      font-size: 2.5rem;
+      line-height: 45px;
       display: none;
     }
   }
@@ -52,4 +57,41 @@ body{
     color: wheat;
     text-decoration-color: rgb(250, 224, 140);
   }
+}
+
+@media screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 812px) 
+  and ((-webkit-device-pixel-ratio: 2) or (-webkit-device-pixel-ratio: 3)) {
+    .leftmenu{
+      margin-left: 0px;
+      padding: 0px 0px 0px 10px;
+      li{
+        list-style: none;
+      }
+    }
+    .toggled{
+      .left{
+        .leftmenu{
+          margin-top: 52px;
+          em{
+            display: inline;
+            font-style: normal;
+            font-size: 2rem;
+          }
+          span{
+            display: none;
+          }
+        }
+      }
+      
+    }
+    .main{
+      .left{
+        .stick{
+          display: block;
+        }
+      }
+    }
+    
 }

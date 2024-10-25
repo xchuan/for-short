@@ -30,12 +30,17 @@ export default function UserName(props:inputItemProps){
 
   const inputParams = {
     onChange:handleCnhange,
+    //onInput:handleCnhange,
     //onKeyDown:(e) => (e.key === "Enter" ? props.onEnter() : null),
     type: !props.type ? "text" : props.type
   }
 
   if(props.onEnter){
     inputParams['onKeyDown'] = (e) => (e.key === "Enter" ? props.onEnter!() : null)
+    /*inputParams['onKeyPress'] = (e) => {
+      e.preventDefault();
+      e.key === "Enter" ? props.onEnter!() : null
+    }*/
   }
 
   return (
