@@ -35,6 +35,7 @@ function App() {
 
   const setTheme = (theme:string)=>{
     setThemeStatus(theme);
+    localStorage.setItem("_theme",theme);
     return theme;
   }
 
@@ -52,6 +53,11 @@ function App() {
       setUser && setUser(usrData);
     }
   }, [token]);
+
+  useEffect(() => {
+    const theme = localStorage.getItem("_theme") || "light";
+    setThemeStatus(theme);
+  }, []);
 
   const themeC = themes[themeStatus]; 
   const mainStyle = {
@@ -71,14 +77,21 @@ function App() {
     <>
       <ThemeContext.Provider value={themes[themeStatus]}>
         <div className={["main",leftStyle.width==50?"toggled":"normal",themeStatus].join(' ')}  style={mainStyle}>
+          <div className="header">
+            <div className="nav">𖡻</div>
+            <div className="logo"><span className="yellowdot">⏺︎</span>⏺︎</div>
+            <div className="productName">Solemio</div>
+          </div>
+          <div className="container">
           <div className="left" style={leftStyle}>
-            <Menu authInfo={user} onThemeChange={setTheme}/>
+            <Menu authInfo={user} theme={themeStatus} onThemeChange={setTheme}/>
             <div className="stick" onClick={toggleMenu}>░</div>
           </div>
           <div className="gap" ref={target}></div>
           <div className="view">
             <AuthRoute>{element}</AuthRoute>
             <div className="footer">{tzCompare("Shanghai","zh-CN")} Copyright &copy; 2024</div>
+          </div>
           </div>
         </div>
       </ThemeContext.Provider>

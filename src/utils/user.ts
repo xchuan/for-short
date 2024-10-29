@@ -4,10 +4,15 @@ export interface User {
   exp: string;
   token?: string;
   logined?: boolean;
-  msg?: string
+  msg?: string;
 }
 
 export interface Iparam {
   username:string;
   password:string;
+}
+
+export type CounterData = {
+  time:string;
+  secs:number;
 }

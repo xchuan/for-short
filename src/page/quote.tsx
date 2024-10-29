@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { post, get } from "../utils/http";
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../utils/auth'
 export default function Quote() {
   const [quoteCn, setQuoteCn] = useState<string>("");
   const [quoteEn, setQuoteEn] = useState<string>("");
@@ -7,6 +9,8 @@ export default function Quote() {
   const [quoteJson, setQuoteJson] = useState<string>("");
   const [quoteLen, setQuoteLen] = useState<number>(0);
   const [selectedCity, setSelectedCity] = useState('Shanghai');
+  const [resultMsg, setResultMsg] = useState<string>("");
+  const navigate = useNavigate();
 
   function handleChangeQuote(event) {
     const inputCn = event.target.value;
@@ -40,7 +44,8 @@ export default function Quote() {
   };
 
   const previewJsonCdn = () => {
-    const myRequest1 = new Request("https://cdn.xhashao.top/nchome/quotes.json");
+    setResultMsg("");
+    const myRequest1 = new Request("https://cdn.xhashao.top/nchome/quotes.json?v="+new Date().getTime());
     //const myRequest = new Request("https://cdn.xhashao.top/nchome/quotes1.json");//Minio
     setQuoteJson('Loading...');
     fetch(myRequest1)
@@ -63,6 +68,12 @@ export default function Quote() {
       city: selectedCity
     }).then((response:any)=>{
       console.log(response);
+      if(response.msg == "Create success!"){
+        setResultMsg("创建成功✅");
+      }else{
+        setResultMsg("失败");
+      }
+      //
     }).catch((error:any) => {
       console.log(error,"Create error")
     });
@@ -80,11 +91,19 @@ export default function Quote() {
   }
 
   const uploadQuote =() => {
+    setResultMsg("上传中");
     get("/v1/jsonupload").then((response:any)=>{
       console.log(response);
-      setQuoteEn(response['translated']);
+      //setQuoteEn(response['translated']);
+      if(response.msg == "success"){
+        setResultMsg("上传成功✅");
+      }else{
+        setResultMsg("失败");
+      }
     }).catch((error:any) => {
-      console.log(error,"Upload error")
+      console.log(error,"Upload error");
+      logout();
+      navigate('/reg');
     });
   }
 
@@ -161,6 +180,7 @@ export default function Quote() {
           }}
         ></input>
         <button onClick={createQuote}>增加</button> <button onClick={goTranslate}>翻译</button> <button onClick={uploadQuote}>上传</button>
+        <div>{resultMsg}</div>
       </div>
     </div>
   );

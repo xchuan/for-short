@@ -2,6 +2,9 @@
 import { useState } from "react";
 import axios, { AxiosProgressEvent } from "axios";
 import { post } from "../utils/http"
+import { logout } from '../utils/auth'
+import { useNavigate } from 'react-router-dom';
+
 const API_URL = import.meta.env.VITE_LOGIN_API;
 //useSearchParams
 interface locationLink {
@@ -18,6 +21,8 @@ export default function Uploadfile() {
   const [displayType, setDisplayType] = useState<string>("")
   const [displayPercent, setDisplayPercent] = useState<string>("0%")
   const [preview, setPreview] = useState<string>("")
+  const navigate = useNavigate();
+  const [directory, setDirectory] = useState('blog');
 
   function handleChangePath(event) {
     console.log(event.target.value,"setPath");
@@ -127,18 +132,23 @@ export default function Uploadfile() {
       setDisplayPath(response.files ?? "blank");
       setDisplayType(response.mimetype ?? "blank");
       //mimetype
+    }).catch((error:any) => {
+      console.log(error,"Upload error");
+      logout();
+      navigate('/reg');
     });
   }
 
   const uploadTrans = () => {
     console.log(path);
-    
+
     post("/v1/trans", {
       path: displayPath,type: displayType,
+      directory: directory,
       lastName: 'Flintstone'
     }).then((response:any)=>{
       //console.log(response);
-      setPreview(response.path ? `https://img.xfiled.one/blog/${String(response.path)}` : "");
+      setPreview(response.path ? `https://img.xfiled.one/${directory}/${String(response.path)}` : "");
       //mimetype
     });
   }
@@ -153,9 +163,17 @@ export default function Uploadfile() {
       <div>
         <input type="file" name="image" id="image" onChange={handleChange} multiple />
         <button onClick={upload}>Send</button>
+        <div>
         <input type="input" id="transpath" value={displayPath} onChange={handleChangePath}></input>
         <input type="input" id="transtype" value={displayType} onChange={e => { setDisplayType(e.target.value); }}></input>
-        <button onClick={uploadTrans}>Trans</button>
+        <select
+          style={{marginLeft: "10px",lineHeight: "26px",height: "26px",verticalAlign: "1px",width: "80px",display: "inline-block"}}
+          value={directory} 
+          onChange={e => setDirectory(e.target.value)}
+         >
+          <option value="nchome">Nchome</option>
+          <option value="blog">Blog</option>
+        </select><button onClick={uploadTrans}>Trans</button></div>
         {/* <button onClick={testPreview}>Preview</button> */}
         <p>{displayPath} | {displayType} | {displayPercent}</p>
         {preview && <a href={preview} target="_blank">Preview</a>}

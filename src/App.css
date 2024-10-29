@@ -6,7 +6,51 @@ body{
 .main{
   display: flex;
   height: 100vh;
+  flex-direction: column;
 
+  .header{
+    height: 32px;
+    display: flex;
+    background-color: rgb(241 181 142);
+    flex-direction: row;
+
+    .logo{
+      height: 24px;
+      line-height: 24px;
+      width: 24px;
+      margin: 4px 0px;
+      display: inline-block;
+      background-color: #fff;
+      transform: rotate(90deg);
+      text-align: center;
+      color: #cecece;
+
+      .yellowdot{
+        color: #f5df4d;
+      }
+    }
+
+    .nav{
+      font-size: 16px;
+      line-height: 32px;
+      width: 32px;
+      margin: 0px 8px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .productName{
+      line-height: 32px;
+      padding-left: 8px;
+      color: #6f5004;
+    }
+  }
+  .container{
+    flex-direction: row;
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+  }
   .left{
     
     position: relative;
@@ -56,6 +100,26 @@ body{
   a:visited {
     color: wheat;
     text-decoration-color: rgb(250, 224, 140);
+  }
+}
+
+.counter_month{
+  width: 50px;
+  margin: 0px;
+  padding: 0px;
+  height: 35px;
+  li{
+    list-style: none;
+    float: left;
+    width: 9px;
+    height: 9px;
+    background-color: aqua;
+    margin-right: 3px;
+    margin-bottom: 3px;
+  }
+
+  li.blank{
+    background-color: white;
   }
 }
 

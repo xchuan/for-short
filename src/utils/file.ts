@@ -3,3 +3,8 @@ export interface IFile {
     name: string,
 }
 
+export interface IMonth {
+    year: string,
+    month: number,
+    cls?:string,
+}
