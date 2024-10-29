@@ -2,19 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { IMonth } from "../../utils/file";
 import moment from "moment";
 
-export default function Months() {
-  const diffs: IMonth[] = [
-    { year: "2024", month: 11 },
-    { year: "2024", month: 12 },
-    { year: "2025", month: 1 },
-    { year: "2025", month: 2 },
-    { year: "2025", month: 3 },
-    { year: "2025", month: 4 },
-    { year: "2025", month: 5 },
-    { year: "2025", month: 6 },
-    { year: "2025", month: 7 },
-    { year: "2025", month: 8 },
-  ];
+interface monthProps {
+  title?:string;
+}
+
+export default function Months(props:monthProps) {
+  const diffs: IMonth[] = [];
 
   const [monthdiff, setMonthdiff] = useState<IMonth[]>([]);
 
@@ -54,7 +47,7 @@ export default function Months() {
   return (
     <>
       <div>
-        🔴 小米SU7
+        {props.title}
         <ul className="counter_month">
           {monthdiff.map((item, index) => (
             <li className={item.cls} key={index} title={item.year+"_"+item.month}></li>
